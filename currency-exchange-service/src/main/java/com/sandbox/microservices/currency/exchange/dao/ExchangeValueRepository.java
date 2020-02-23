@@ -1,6 +1,6 @@
-package com.sandbox.microservices.exchange.dao;
+package com.sandbox.microservices.currency.exchange.dao;
 
-import com.sandbox.microservices.exchange.models.ExchangeValue;
+import com.sandbox.microservices.currency.exchange.models.ExchangeValue;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

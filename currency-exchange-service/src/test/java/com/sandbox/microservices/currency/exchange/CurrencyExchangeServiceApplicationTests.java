@@ -1,4 +1,4 @@
-package com.sandbox.microservices.exchange;
+package com.sandbox.microservices.currency.exchange;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

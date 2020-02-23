@@ -1,4 +1,4 @@
-package com.sandbox.microservices.exchange.models;
+package com.sandbox.microservices.currency.exchange.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

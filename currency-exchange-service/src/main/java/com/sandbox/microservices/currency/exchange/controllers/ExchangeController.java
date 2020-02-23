@@ -1,7 +1,7 @@
-package com.sandbox.microservices.exchange.controllers;
+package com.sandbox.microservices.currency.exchange.controllers;
 
-import com.sandbox.microservices.exchange.dao.ExchangeValueRepository;
-import com.sandbox.microservices.exchange.models.ExchangeValue;
+import com.sandbox.microservices.currency.exchange.dao.ExchangeValueRepository;
+import com.sandbox.microservices.currency.exchange.models.ExchangeValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
