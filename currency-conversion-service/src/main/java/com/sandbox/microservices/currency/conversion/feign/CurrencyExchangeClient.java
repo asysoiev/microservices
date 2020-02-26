@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 /**
  * @author Andrii Sysoiev
  */
-@FeignClient(name = "currency-exchange-service")
+@FeignClient(name = "zuul-gateway-server")
 @RibbonClient(name = "currency-exchange-service")
 public interface CurrencyExchangeClient {
 
-    @GetMapping("/currency-exchange/from/{from}/to/{to}")
+    @GetMapping("/currency-exchange-service/currency-exchange/from/{from}/to/{to}")
     ConversionResult retrieveExchangeValue(@PathVariable String from, @PathVariable String to);
 }
