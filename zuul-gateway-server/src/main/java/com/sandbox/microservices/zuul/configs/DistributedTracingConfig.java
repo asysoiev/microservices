@@ -1,4 +1,4 @@
-package com.sandbox.microservices.eureka.configs;
+package com.sandbox.microservices.zuul.configs;
 
 import brave.sampler.Sampler;
 import org.springframework.context.annotation.Bean;
