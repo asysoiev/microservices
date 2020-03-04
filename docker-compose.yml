@@ -1,0 +1,41 @@
+version: '3.7'
+services:
+
+  naming-server:
+    build:
+      context: netflix-eureka-naming-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    #restart: always
+    networks:
+      - microservices-network
+      
+  config-server:
+    build:
+      context: config-server
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    #restart: always
+    networks:
+      - microservices-network
+
+  limits-service:
+    build:
+      context: limits-service
+      dockerfile: Dockerfile    
+    ports:
+      - "8080:8080"
+    #restart: always
+    depends_on:
+      - naming-server
+      - config-server
+    networks:
+      - microservices-network
+  
+# Networks to be created to facilitate communication between containers
+networks:
+  microservices-network:
+    external:
+      name: microservices-network
