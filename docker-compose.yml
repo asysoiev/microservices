@@ -1,6 +1,15 @@
 version: '3.7'
 services:
 
+  rabbitmq:
+    image: rabbitmq:3.5.3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+#    restart: always
+    networks:
+      - microservices-network
+
   naming-server:
     build:
       context: netflix-eureka-naming-server
@@ -10,7 +19,21 @@ services:
     #restart: always
     networks:
       - microservices-network
-      
+
+  zipkin-server:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      STORAGE_TYPE: mem
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+    ports:
+      - "9411:9411"
+#    restart: always
+    depends_on:
+      - rabbitmq
+    networks:
+      - microservices-network
+
   config-server:
     build:
       context: config-server
@@ -21,20 +44,79 @@ services:
     networks:
       - microservices-network
 
+  zuul-api-gateway:
+    build:
+      context: zuul-gateway-server
+      dockerfile: Dockerfile
+    environment:
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      eureka.client.service-url.default-zone: http://naming-server:8761/eureka
+    ports:
+      - "8765:8765"
+#    restart: always
+    depends_on:
+      - naming-server
+      - rabbitmq
+      - zipkin-server
+    networks:
+      - microservices-network
+
   limits-service:
     build:
       context: limits-service
-      dockerfile: Dockerfile    
+      dockerfile: Dockerfile
+    environment:
+      spring.cloud.config.server.uri: http://config-server:8888
+      eureka.client.service-url.default-zone: http://naming-server:8761/eureka
     ports:
       - "8080:8080"
     #restart: always
     depends_on:
       - naming-server
+      - rabbitmq
       - config-server
     networks:
       - microservices-network
-  
-# Networks to be created to facilitate communication between containers
+
+  currency-exchange-service:
+    build:
+      context: currency-exchange-service
+      dockerfile: Dockerfile
+    environment:
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      eureka.client.service-url.default-zone: http://naming-server:8761/eureka
+    ports:
+      - "8000:8000"
+#    restart: always
+    depends_on:
+      - naming-server
+      - rabbitmq
+      - zipkin-server
+    networks:
+      - microservices-network
+
+  currency-conversion-service:
+    build:
+      context: currency-conversion-service
+      dockerfile: Dockerfile
+    ports:
+      - "8100:8100"
+#    restart: always
+    environment:
+      #CURRENCY_EXCHANGE_URI: http://currency-exchange-service:8000
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      eureka.client.service-url.default-zone: http://naming-server:8761/eureka
+      spring.rabbitmq.host: rabbitmq
+    depends_on:
+      - currency-exchange-service
+      - naming-server
+      - rabbitmq
+      - zipkin-server
+    networks:
+      - microservices-network
+
+# Networks must be created before up.
+# Firewall must be configured.
 networks:
   microservices-network:
     external:
