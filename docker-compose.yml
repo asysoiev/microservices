@@ -22,7 +22,7 @@ services:
 
   zipkin-server:
     image: openzipkin/zipkin
-    container_name: zipkin
+    container_name: zipkin-server
     environment:
       STORAGE_TYPE: mem
       RABBIT_URI: amqp://guest:guest@rabbitmq:5672
@@ -44,13 +44,14 @@ services:
     networks:
       - microservices-network
 
-  zuul-api-gateway:
+  zuul-gateway-server:
     build:
       context: zuul-gateway-server
       dockerfile: Dockerfile
     environment:
       RABBIT_URI: amqp://guest:guest@rabbitmq:5672
       SERVICE_URL_DEFAULT_ZONE: http://naming-server:8761/eureka
+      ZIPKIN_URI: http://zipkin-server:9411
     ports:
       - "8765:8765"
 #    restart: always
@@ -86,6 +87,7 @@ services:
       RABBIT_URI: amqp://guest:guest@rabbitmq:5672
       SERVICE_URL_DEFAULT_ZONE: http://naming-server:8761/eureka
       CONFIG_SERVER_URI: http://config-server:8888
+      ZIPKIN_URI: http://zipkin-server:9411
     ports:
       - "8000:8000"
 #    restart: always
@@ -110,6 +112,7 @@ services:
       SERVICE_URL_DEFAULT_ZONE: http://naming-server:8761/eureka
       spring.rabbitmq.host: rabbitmq
       CONFIG_SERVER_URI: http://config-server:8888
+      ZIPKIN_URI: http://zipkin-server:9411
     depends_on:
       - currency-exchange-service
       - naming-server
