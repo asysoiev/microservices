@@ -38,9 +38,14 @@ services:
     build:
       context: config-server
       dockerfile: Dockerfile
+    environment:
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
     ports:
       - "8888:8888"
     #restart: always
+    depends_on:
+      - rabbitmq
     networks:
       - microservices-network
 
@@ -67,8 +72,10 @@ services:
       context: limits-service
       dockerfile: Dockerfile
     environment:
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
       CONFIG_SERVER_URI: http://config-server:8888
       SERVICE_URL_DEFAULT_ZONE: http://naming-server:8761/eureka
+      SPRING_RABBITMQ_HOST: rabbitmq
     ports:
       - "8080:8080"
     #restart: always
