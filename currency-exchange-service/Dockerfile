@@ -1,4 +1,4 @@
-FROM openjdk:11-jdk-oracle
+FROM openjdk:11.0.9.1-jre-slim
 VOLUME /tmp
 EXPOSE 8000
 ADD target/*.jar app.jar
