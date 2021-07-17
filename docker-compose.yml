@@ -133,5 +133,4 @@ services:
 # Firewall must be configured.
 networks:
   microservices-network:
-    external:
-      name: microservices-network
+    external: true
