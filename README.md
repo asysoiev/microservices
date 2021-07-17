@@ -23,9 +23,11 @@ Sandbox for Spring microservices
 Direct:
 - http://localhost:8000/currency-exchange/from/USD/to/UAH
 - http://localhost:8100/currency-conversion/from/USD/to/UAH/quantity/10
-Netflix Zuul Server:  
-- http://localhost:8765/currency-exchange-service/currency-exchange/from/USD/to/UAH  
+  Netflix Zuul Server:
+- http://localhost:8765/currency-exchange-service/currency-exchange/from/USD/to/UAH
 - http://localhost:8765/limits-service/limits
-- http://localhost:8765/currency-conversion-service/currency-conversion/from/USD/to/UAH/quantity/10  
-Zipkin traces:  
+- http://localhost:8765/currency-conversion-service/currency-conversion/from/USD/to/UAH/quantity/10
+  Eureka naming server:
+- http://localhost:8761/
+  Zipkin traces:
 - http://localhost:9411/zipkin/
