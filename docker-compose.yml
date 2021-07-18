@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.9'
 services:
 
   rabbitmq:
@@ -105,6 +105,9 @@ services:
       - config-server
     networks:
       - microservices-network
+    deploy:
+      mode: replicated
+      replicas: 2
 
   currency-conversion-service:
     build:
