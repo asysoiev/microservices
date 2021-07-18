@@ -14,6 +14,7 @@ services:
     build:
       context: netflix-eureka-naming-server
       dockerfile: Dockerfile
+    image: microservices/naming-server:latest
     ports:
       - "8761:8761"
     #restart: always
@@ -38,6 +39,7 @@ services:
     build:
       context: config-server
       dockerfile: Dockerfile
+    image: microservices/config-server:latest
     environment:
       RABBIT_URI: amqp://guest:guest@rabbitmq:5672
       SPRING_RABBITMQ_HOST: rabbitmq
@@ -53,6 +55,7 @@ services:
     build:
       context: zuul-gateway-server
       dockerfile: Dockerfile
+    image: microservices/zuul-gateway-server:latest
     environment:
       RABBIT_URI: amqp://guest:guest@rabbitmq:5672
       SERVICE_URL_DEFAULT_ZONE: http://naming-server:8761/eureka
@@ -71,6 +74,7 @@ services:
     build:
       context: limits-service
       dockerfile: Dockerfile
+    image: microservices/limits-service:0.0.1-SNAPSHOT
     environment:
       RABBIT_URI: amqp://guest:guest@rabbitmq:5672
       CONFIG_SERVER_URI: http://config-server:8888
@@ -90,6 +94,7 @@ services:
     build:
       context: currency-exchange-service
       dockerfile: Dockerfile
+    image: microservices/currency-exchange-service:0.0.1-SNAPSHOT
     environment:
       RABBIT_URI: amqp://guest:guest@rabbitmq:5672
       SERVICE_URL_DEFAULT_ZONE: http://naming-server:8761/eureka
@@ -113,6 +118,7 @@ services:
     build:
       context: currency-conversion-service
       dockerfile: Dockerfile
+    image: microservices/currency-conversion-service:0.0.1-SNAPSHOT
     ports:
       - "8100:8100"
 #    restart: always
