@@ -13,7 +13,7 @@ public class ConversionResult implements Cloneable {
     private BigDecimal rate;
     private BigDecimal quantity;
     private BigDecimal convertedAmount;
-    private int port;
+    private String hostname;
 
     public ConversionResult() {
         rate = BigDecimal.ZERO;
@@ -75,12 +75,12 @@ public class ConversionResult implements Cloneable {
         return this;
     }
 
-    public int getPort() {
-        return port;
+    public String getHostname() {
+        return hostname;
     }
 
-    public ConversionResult setPort(int port) {
-        this.port = port;
+    public ConversionResult setHostname(String hostname) {
+        this.hostname = hostname;
         return this;
     }
 

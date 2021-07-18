@@ -5,10 +5,12 @@ import com.sandbox.microservices.currency.exchange.models.ExchangeValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * @author Andrii Sysoiev
@@ -16,10 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ExchangeController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(ExchangeController.class);
 
-    @Value("${server.port:0}")
-    private Integer port;
     @Autowired
     private ExchangeValueRepository exchangeValueRepository;
 
@@ -27,7 +27,16 @@ public class ExchangeController {
     public ExchangeValue retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
         logger.trace("Get exchange from {} to {}", from, to);
         ExchangeValue exchangeValue = exchangeValueRepository.findByFromAndTo(from, to);
-        exchangeValue.setPort(port);
+        exchangeValue.setHostname(getHostname());
         return exchangeValue;
+    }
+
+    private static String getHostname() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            logger.trace("Get hostname Exception: ", e);
+            return null;
+        }
     }
 }

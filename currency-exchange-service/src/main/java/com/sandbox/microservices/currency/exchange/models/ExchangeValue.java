@@ -22,7 +22,7 @@ public class ExchangeValue {
     private String to;
     private BigDecimal rate;
     @Transient
-    private int port;
+    private String hostname;
 
     public Long getId() {
         return id;
@@ -60,12 +60,12 @@ public class ExchangeValue {
         return this;
     }
 
-    public int getPort() {
-        return port;
+    public String getHostname() {
+        return hostname;
     }
 
-    public ExchangeValue setPort(int port) {
-        this.port = port;
+    public ExchangeValue setHostname(String hostname) {
+        this.hostname = hostname;
         return this;
     }
 }
